@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  --background-primary: #ffffff;
+  --background-secondary: #f4f6f9;
+  --background-tertiary: #e8edf4;
+  --border-primary: #7f9ab8;
+  --border-secondary: #b2c1d2;
+  --border-tertiary: #d4dde8;
+  --text-primary: #111827;
+  --text-secondary: #354052;
+  --text-tertiary: #657386;
+  --accent: #0f5798;
+  --accent-soft: #dcecf9;
+  --radius: 8px;
+}
+
+[data-theme="dark"] {
+  --background-primary: #111827;
+  --background-secondary: #0b1220;
+  --background-tertiary: #172033;
+  --border-primary: #5b7592;
+  --border-secondary: #334155;
+  --border-tertiary: #243044;
+  --text-primary: #f5f7fb;
+  --text-secondary: #a9b5c8;
+  --text-tertiary: #74839a;
+  --accent: #7bb7f2;
+  --accent-soft: #14324f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), "Segoe UI", system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+textarea,
+input,
+select {
+  color: var(--text-primary);
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: #697789;
+}
+
+.tn-shell {
+  min-height: 100dvh;
+  background:
+    linear-gradient(180deg, #ffffff 0, #f6f8fb 23rem, #f2f5f8 100%);
+}
+
+[data-theme="dark"] .tn-shell {
+  background:
+    radial-gradient(circle at 50% -16rem, rgb(54 98 145 / 28%), transparent 34rem),
+    linear-gradient(180deg, #0f172a 0, #0b1220 26rem, #09111e 100%);
+}
+
+.tn-card {
+  border: 1px solid var(--border-tertiary);
+  border-radius: var(--radius);
+  background: var(--background-primary);
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--background-primary) !important;
+}
+
+[data-theme="dark"] .shadow-sm {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 26%) !important;
+}
+
+.tn-focus {
+  outline: none;
+}
+
+.tn-focus:focus-visible {
+  box-shadow: 0 0 0 3px rgb(24 95 165 / 18%);
+  border-color: var(--accent);
+}
+
+.prose h2 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.prose p {
+  margin: 0.75rem 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.text-white {
+  color: #ffffff;
+}

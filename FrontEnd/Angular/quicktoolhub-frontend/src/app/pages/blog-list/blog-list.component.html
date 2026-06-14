@@ -1,0 +1,30 @@
+<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+  <div class="mb-8 max-w-3xl">
+    <p class="mb-4 w-fit rounded-full border border-[var(--border)] bg-[var(--accent-soft)] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent-strong)]">Guides</p>
+    <h1 class="text-4xl font-semibold tracking-normal text-[var(--foreground)] sm:text-5xl">Utility tools blog</h1>
+    <p class="mt-4 text-lg leading-8 text-[var(--muted)]">Practical guides for using small online tools more effectively.</p>
+  </div>
+
+  @if (posts()[0]; as featured) {
+    <a [routerLink]="['/blog', featured.slug]" class="mb-6 grid gap-6 rounded-2xl border border-[var(--border)] bg-[var(--panel-strong)] p-6 text-[var(--foreground)] shadow-[0_24px_65px_-52px_rgb(0_0_0/80%)] transition hover:border-[var(--border-hover)] lg:grid-cols-[1fr_0.8fr]">
+      <div>
+        <p class="text-sm font-medium text-[var(--accent-strong)]">Featured article</p>
+        <h2 class="mt-4 text-3xl font-semibold">{{ featured.title }}</h2>
+        <p class="mt-4 leading-7 text-[var(--muted)]">{{ featured.excerpt }}</p>
+      </div>
+      <div class="rounded-2xl bg-[var(--panel)] p-5 text-sm leading-7 text-[var(--muted)] ring-1 ring-[var(--border)]">
+        {{ featured.categories?.join(' / ') }}
+      </div>
+    </a>
+  }
+
+  <div class="grid gap-4 md:grid-cols-3">
+    @for (post of posts().slice(1); track post.slug) {
+      <a [routerLink]="['/blog', post.slug]" class="rounded-2xl border border-[var(--border)] bg-[var(--panel)] p-5 shadow-sm shadow-black/10 transition hover:border-[var(--border-hover)] hover:bg-[var(--panel-hover)]">
+        <p class="text-sm font-medium text-[var(--accent-strong)]">{{ post.categories?.[0] }}</p>
+        <h2 class="mt-3 text-xl font-semibold leading-snug text-[var(--foreground)]">{{ post.title }}</h2>
+        <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{{ post.excerpt }}</p>
+      </a>
+    }
+  </div>
+</section>

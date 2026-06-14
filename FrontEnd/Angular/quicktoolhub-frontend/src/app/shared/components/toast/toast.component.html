@@ -1,0 +1,27 @@
+<div class="fixed bottom-20 right-4 z-[80] grid w-[min(calc(100vw-2rem),380px)] gap-3 sm:bottom-24 sm:right-6" aria-live="polite" aria-atomic="true">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <button
+      type="button"
+      class="group flex items-center gap-3 rounded-xl border bg-white/96 px-4 py-3 text-left text-sm font-semibold shadow-[0_18px_48px_rgba(24,24,27,0.16)] backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(24,24,27,0.20)]"
+      [class.border-[#b7d8c4]]="toast.type === 'success'"
+      [class.text-[#173f35]]="toast.type === 'success'"
+      [class.border-red-200]="toast.type === 'error'"
+      [class.text-red-800]="toast.type === 'error'"
+      (click)="toastService.dismiss(toast.id)"
+    >
+      <span
+        class="grid size-8 shrink-0 place-items-center rounded-lg text-base"
+        [class.bg-[#e8f4ec]]="toast.type === 'success'"
+        [class.text-[#245f46]]="toast.type === 'success'"
+        [class.bg-red-50]="toast.type === 'error'"
+        [class.text-red-700]="toast.type === 'error'"
+      >
+        {{ toast.type === 'success' ? '✓' : '!' }}
+      </span>
+      <span class="grid gap-0.5">
+        <span>{{ toast.message }}</span>
+        <span class="text-xs font-medium opacity-70">Click to dismiss</span>
+      </span>
+    </button>
+  }
+</div>

@@ -1,0 +1,78 @@
+<div class="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+  @if (open()) {
+    <section class="mb-3 w-[min(calc(100vw-2rem),420px)] rounded-lg bg-white p-5 shadow-2xl shadow-zinc-950/20 ring-1 ring-zinc-200">
+      <div class="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-semibold text-zinc-950">Send feedback</h2>
+          <p class="mt-1 text-sm leading-6 text-zinc-600">Tell us what broke, what feels unclear, or what tool you want next.</p>
+        </div>
+        <button type="button" class="rounded-md px-2 py-1 text-sm font-semibold text-zinc-500 hover:bg-zinc-100" (click)="toggle()">Close</button>
+      </div>
+
+      @if (submitted()) {
+        <div class="rounded-lg bg-[#eef4e9] p-4 text-sm leading-6 text-[#245f46]">
+          Feedback saved. Thanks for helping improve QuickToolHub.
+        </div>
+        <button type="button" class="mt-4 rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="submitted.set(false); open.set(false)">Done</button>
+      } @else {
+        <div class="grid gap-4">
+          <label class="grid gap-2 text-sm font-medium text-zinc-800">
+            Type
+            <select class="rounded-lg border border-zinc-300 bg-white px-3 py-2 outline-none focus:border-[#245f46]" [ngModel]="type()" (ngModelChange)="type.set($event)">
+              <option value="bug">Bug</option>
+              <option value="feature">Feature request</option>
+              <option value="ui">UI issue</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <label class="grid gap-2 text-sm font-medium text-zinc-800">
+            Message
+            <textarea
+              class="min-h-32 resize-y rounded-lg border border-zinc-300 p-3 text-sm outline-none focus:border-[#245f46]"
+              placeholder="What should we fix or add?"
+              [ngModel]="message()"
+              (ngModelChange)="message.set($event)"
+            ></textarea>
+          </label>
+
+          <label class="grid gap-2 text-sm font-medium text-zinc-800">
+            Email optional
+            <input
+              type="email"
+              class="rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-[#245f46]"
+              placeholder="Only if you want a reply"
+              [ngModel]="email()"
+              (ngModelChange)="email.set($event)"
+            />
+          </label>
+
+          @if (toolSlug()) {
+            <p class="rounded-lg bg-[#f7f8f4] px-3 py-2 text-xs text-zinc-600">Tool: {{ toolSlug() }}</p>
+          }
+
+          @if (error()) {
+            <p class="text-sm font-medium text-red-700">{{ error() }}</p>
+          }
+
+          <button
+            type="button"
+            class="rounded-lg bg-[#245f46] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1d4f3a] disabled:cursor-not-allowed disabled:opacity-60"
+            [disabled]="loading()"
+            (click)="submit()"
+          >
+            {{ loading() ? 'Saving...' : 'Save feedback' }}
+          </button>
+        </div>
+      }
+    </section>
+  }
+
+  <button
+    type="button"
+    class="rounded-lg bg-zinc-950 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-zinc-950/20 transition hover:bg-zinc-800 active:translate-y-px"
+    (click)="toggle()"
+  >
+    Feedback
+  </button>
+</div>

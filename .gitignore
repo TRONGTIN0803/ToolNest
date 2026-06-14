@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs and caches
+.next/
+dist/
+build/
+.angular/
+.turbo/
+.vercel/
+coverage/
+*.tsbuildinfo
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+wp-config*.local.php
+
+# Local planning and tracking notes
+/Architecture.md
+/devtools-web-build-plan.md
+/QUICKTOOLHUB_UPGRADE_PLAN.md
+/QUICKTOOLHUB_UPGRADE_TRACKING.md
+/SETUP_STATUS.md
+Backend/PHP workpress/AI_Prompt_Hub_Backend_WordPress_Plan.md
+FrontEnd/Angular/AI_Prompt_Hub_Frontend_Angular_Plan.md
+
+# Logs
+*.log
+*.err.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Laravel runtime
+toolnest-api/storage/*.key
+toolnest-api/storage/logs/*
+!toolnest-api/storage/logs/.gitignore
+toolnest-api/storage/framework/cache/*
+!toolnest-api/storage/framework/cache/.gitignore
+toolnest-api/storage/framework/sessions/*
+!toolnest-api/storage/framework/sessions/.gitignore
+toolnest-api/storage/framework/testing/*
+!toolnest-api/storage/framework/testing/.gitignore
+toolnest-api/storage/framework/views/*
+!toolnest-api/storage/framework/views/.gitignore
+toolnest-api/bootstrap/cache/*
+!toolnest-api/bootstrap/cache/.gitignore
+toolnest-api/composer.phar
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,205 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.pg{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;font-family:var(--font-sans)}
+.bar{background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:7px 14px;display:flex;align-items:center;gap:10px}
+.dots{display:flex;gap:5px}.dot{width:10px;height:10px;border-radius:50%}
+.urlbar{flex:1;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--color-text-secondary)}
+.hdr{display:flex;align-items:center;padding:0 22px;height:48px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
+.logo{font-size:15px;font-weight:500;color:#185FA5;margin-right:24px;display:flex;align-items:center;gap:5px}
+.nav{display:flex;gap:2px;flex:1}
+.ni{font-size:12px;color:var(--color-text-secondary);padding:5px 9px;border-radius:var(--border-radius-md)}
+.na{background:#E6F1FB;color:#185FA5}
+.hdr-r{margin-left:auto}
+.sbox{display:flex;align-items:center;gap:6px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--color-text-secondary)}
+.bc{background:var(--color-background-secondary);padding:8px 22px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:5px}
+.bcl{color:#185FA5}
+.body{display:grid;grid-template-columns:1fr 220px;gap:0}
+.main{padding:16px 18px;border-right:0.5px solid var(--color-border-tertiary)}
+.sidebar{padding:14px}
+.ph{margin-bottom:14px}
+.ph h1{font-size:17px;font-weight:500;margin-bottom:4px;color:var(--color-text-primary)}
+.ph p{font-size:12px;color:var(--color-text-secondary)}
+.ph-meta{display:flex;align-items:center;gap:10px;margin-top:6px}
+.badge{font-size:10px;padding:3px 8px;border-radius:20px}
+.b-dev{background:#EEEDFE;color:#3C3489}
+.b-new{background:#EAF3DE;color:#27500A}
+.b-hot{background:#E6F1FB;color:#0C447C}
+.toolbar{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.tbtn{font-size:11px;padding:5px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px}
+.tbtn.active{background:#E6F1FB;color:#185FA5;border-color:#B5D4F4}
+.tbtn-sep{width:1px;height:18px;background:var(--color-border-tertiary)}
+.box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:12px}
+.box-hdr{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);display:flex;align-items:center;justify-content:space-between}
+.box-title{font-size:12px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;gap:6px}
+.box-acts{display:flex;gap:6px}
+.bact{font-size:11px;padding:3px 9px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px}
+.code-area{background:var(--color-background-secondary);padding:12px;font-family:var(--font-mono);font-size:11px;color:var(--color-text-secondary);min-height:120px;line-height:1.7}
+.code-key{color:#534AB7}
+.code-str{color:#3B6D11}
+.code-num{color:#854F0B}
+.output-good{background:#EAF3DE;border-bottom:0.5px solid #C0DD97;padding:7px 12px;display:flex;align-items:center;gap:6px;font-size:11px;color:#27500A}
+.output-code{padding:12px;font-family:var(--font-mono);font-size:11px;color:var(--color-text-secondary);min-height:120px;line-height:1.7}
+.inadbanner{border:0.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);height:48px;display:flex;align-items:center;justify-content:center;margin:10px 0;font-size:10px;color:var(--color-text-tertiary);background:var(--color-background-secondary)}
+.howto{margin-top:4px}
+.howto h2{font-size:14px;font-weight:500;margin-bottom:8px;padding-bottom:7px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.step{display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:var(--color-text-secondary)}
+.stepn{width:20px;height:20px;border-radius:50%;background:#E6F1FB;color:#185FA5;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.faq{margin-top:14px}
+.faq h2{font-size:14px;font-weight:500;margin-bottom:8px;padding-bottom:7px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.faq-item{margin-bottom:10px}
+.faq-q{font-size:12px;font-weight:500;margin-bottom:3px;color:var(--color-text-primary)}
+.faq-a{font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+.ad-box{background:var(--color-background-secondary);border:0.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);text-align:center;font-size:10px;color:var(--color-text-tertiary);margin-bottom:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.rel{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:10px}
+.rel-t{padding:9px 12px;font-size:12px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.rel-i{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:7px}
+.rel-i:last-child{border-bottom:none}
+.rel-i i{font-size:14px;color:#185FA5}
+</style>
+
+<h2 class="sr-only">JSON Formatter tool page mockup</h2>
+
+<div class="pg">
+  <div class="bar">
+    <div class="dots">
+      <div class="dot" style="background:#E24B4A"></div>
+      <div class="dot" style="background:#EF9F27"></div>
+      <div class="dot" style="background:#639922"></div>
+    </div>
+    <div class="urlbar"><i class="ti ti-lock" style="font-size:11px;margin-right:4px" aria-hidden="true"></i>toolnest.dev/tools/json-formatter</div>
+  </div>
+
+  <div class="hdr">
+    <div class="logo"><i class="ti ti-tools" aria-hidden="true"></i> ToolNest</div>
+    <div class="nav">
+      <div class="ni">All tools</div>
+      <div class="ni na">Developer</div>
+      <div class="ni">Text</div>
+      <div class="ni">Color</div>
+      <div class="ni">Time</div>
+    </div>
+    <div class="hdr-r"><div class="sbox"><i class="ti ti-search" aria-hidden="true"></i> Search...</div></div>
+  </div>
+
+  <div class="bc">
+    <span class="bcl">Home</span><i class="ti ti-chevron-right" style="font-size:10px" aria-hidden="true"></i>
+    <span class="bcl">Developer tools</span><i class="ti ti-chevron-right" style="font-size:10px" aria-hidden="true"></i>
+    <span>JSON Formatter</span>
+  </div>
+
+  <div class="body">
+    <div class="main">
+      <div class="ph">
+        <h1>JSON Formatter & Validator</h1>
+        <p>Format, validate and minify JSON data instantly. 100% free, no signup required.</p>
+        <div class="ph-meta">
+          <span class="badge b-dev"><i class="ti ti-code" style="font-size:10px" aria-hidden="true"></i> Developer tools</span>
+          <span class="badge b-hot"><i class="ti ti-flame" style="font-size:10px" aria-hidden="true"></i> 24.1K uses</span>
+          <span style="font-size:11px;color:var(--color-text-tertiary)">Works offline · No data stored</span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="tbtn active"><i class="ti ti-align-left" style="font-size:12px" aria-hidden="true"></i> Format</div>
+        <div class="tbtn"><i class="ti ti-minimize" style="font-size:12px" aria-hidden="true"></i> Minify</div>
+        <div class="tbtn"><i class="ti ti-check" style="font-size:12px" aria-hidden="true"></i> Validate</div>
+        <div class="tbtn-sep"></div>
+        <div class="tbtn">Indent: <strong style="margin-left:3px">2</strong> <i class="ti ti-chevron-down" style="font-size:10px" aria-hidden="true"></i></div>
+      </div>
+
+      <div class="box">
+        <div class="box-hdr">
+          <div class="box-title"><i class="ti ti-pencil" style="font-size:13px" aria-hidden="true"></i> Input — paste JSON here</div>
+          <div class="box-acts">
+            <div class="bact"><i class="ti ti-clipboard" style="font-size:11px" aria-hidden="true"></i> Paste</div>
+            <div class="bact"><i class="ti ti-file-upload" style="font-size:11px" aria-hidden="true"></i> Upload</div>
+            <div class="bact"><i class="ti ti-trash" style="font-size:11px" aria-hidden="true"></i> Clear</div>
+          </div>
+        </div>
+        <div class="code-area">
+          <span class="code-key">{</span><br>
+          &nbsp;&nbsp;<span class="code-key">"name"</span>: <span class="code-str">"ToolNest"</span>,<br>
+          &nbsp;&nbsp;<span class="code-key">"version"</span>: <span class="code-num">2.0</span>,<br>
+          &nbsp;&nbsp;<span class="code-key">"tools"</span>: [<span class="code-str">"json"</span>, <span class="code-str">"base64"</span>, <span class="code-str">"uuid"</span>],<br>
+          &nbsp;&nbsp;<span class="code-key">"free"</span>: <span class="code-key">true</span><br>
+          <span class="code-key">}</span>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="output-good">
+          <i class="ti ti-check" style="font-size:13px" aria-hidden="true"></i>
+          Valid JSON — 4 keys · 142 bytes
+        </div>
+        <div class="box-hdr" style="border-top:0.5px solid var(--color-border-tertiary)">
+          <div class="box-title"><i class="ti ti-eye" style="font-size:13px" aria-hidden="true"></i> Formatted output</div>
+          <div class="box-acts">
+            <div class="bact"><i class="ti ti-copy" style="font-size:11px" aria-hidden="true"></i> Copy</div>
+            <div class="bact"><i class="ti ti-download" style="font-size:11px" aria-hidden="true"></i> Download</div>
+          </div>
+        </div>
+        <div class="output-code">
+          <span class="code-key">{</span><br>
+          &nbsp;&nbsp;<span class="code-key">"name"</span>: <span class="code-str">"ToolNest"</span>,<br>
+          &nbsp;&nbsp;<span class="code-key">"version"</span>: <span class="code-num">2.0</span>,<br>
+          &nbsp;&nbsp;<span class="code-key">"tools"</span>: [<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-str">"json"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-str">"base64"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-str">"uuid"</span><br>
+          &nbsp;&nbsp;],<br>
+          &nbsp;&nbsp;<span class="code-key">"free"</span>: <span class="code-key">true</span><br>
+          <span class="code-key">}</span>
+        </div>
+      </div>
+
+      <div class="inadbanner"><i class="ti ti-rectangle" style="margin-right:4px" aria-hidden="true"></i> Advertisement — responsive</div>
+
+      <div class="howto">
+        <h2>How to use the JSON Formatter</h2>
+        <div class="step"><div class="stepn">1</div><div>Paste or type your JSON data in the input box above, or upload a .json file.</div></div>
+        <div class="step"><div class="stepn">2</div><div>Click <strong>Format</strong> to beautify, <strong>Minify</strong> to compress, or <strong>Validate</strong> to check for errors.</div></div>
+        <div class="step"><div class="stepn">3</div><div>Copy the output or download it as a .json file. Your data never leaves your browser.</div></div>
+      </div>
+
+      <div class="faq">
+        <h2>Frequently asked questions</h2>
+        <div class="faq-item">
+          <div class="faq-q">Is my JSON data stored or sent to a server?</div>
+          <div class="faq-a">No. All processing happens entirely in your browser using JavaScript. We never see, store, or transmit your data.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What is the maximum file size this tool supports?</div>
+          <div class="faq-a">The tool handles JSON files up to ~5MB comfortably. Larger files may slow down depending on your device.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I use this to validate JSON for API responses?</div>
+          <div class="faq-a">Yes. Paste the API response directly — the validator will highlight the exact line and position of any syntax errors.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="ad-box" style="height:130px"><i class="ti ti-rectangle" style="font-size:20px" aria-hidden="true"></i><div>300 × 250</div><div style="font-size:9px">Advertisement</div></div>
+
+      <div class="rel">
+        <div class="rel-t"><i class="ti ti-stack-2" style="font-size:12px;margin-right:4px" aria-hidden="true"></i>Related tools</div>
+        <div class="rel-i"><i class="ti ti-link" aria-hidden="true"></i> URL Encoder / Decoder</div>
+        <div class="rel-i"><i class="ti ti-shield-lock" aria-hidden="true"></i> Base64 Encoder</div>
+        <div class="rel-i"><i class="ti ti-fingerprint" aria-hidden="true"></i> Hash Generator</div>
+        <div class="rel-i"><i class="ti ti-key" aria-hidden="true"></i> JWT Decoder</div>
+        <div class="rel-i"><i class="ti ti-regex" aria-hidden="true"></i> Regex Tester</div>
+        <div class="rel-i"><i class="ti ti-binary" aria-hidden="true"></i> UUID Generator</div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-t"><i class="ti ti-star" style="font-size:12px;margin-right:4px" aria-hidden="true"></i>Top developer tools</div>
+        <div class="rel-i" style="justify-content:space-between"><span>UUID Generator</span><span style="font-size:10px;color:var(--color-text-tertiary)">18.7K</span></div>
+        <div class="rel-i" style="justify-content:space-between"><span>JWT Decoder</span><span style="font-size:10px;color:var(--color-text-tertiary)">11.2K</span></div>
+        <div class="rel-i" style="justify-content:space-between"><span>Hash Generator</span><span style="font-size:10px;color:var(--color-text-tertiary)">9.4K</span></div>
+      </div>
+
+      <div class="ad-box" style="height:200px"><i class="ti ti-rectangle" style="font-size:20px" aria-hidden="true"></i><div>300 × 600</div><div style="font-size:9px">Advertisement</div></div>
+    </div>
+  </div>
+</div>

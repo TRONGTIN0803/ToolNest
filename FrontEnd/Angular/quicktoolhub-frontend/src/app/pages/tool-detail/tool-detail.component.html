@@ -1,0 +1,503 @@
+<section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+  @if (tool(); as item) {
+    <nav class="mb-8 text-sm text-zinc-400">
+      <a routerLink="/" class="hover:text-white">Home</a>
+      <span class="mx-2">/</span>
+      <a routerLink="/tools" class="hover:text-white">Tools</a>
+      <span class="mx-2">/</span>
+      <span>{{ item.name }}</span>
+    </nav>
+
+    <div class="mb-8 max-w-3xl">
+      <p class="mb-4 w-fit rounded-full bg-white/8 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#d7ff7a] ring-1 ring-white/10">
+        {{ item.category }} tool
+      </p>
+      <h1 class="text-4xl font-semibold leading-tight tracking-normal text-white sm:text-5xl">{{ item.name }}</h1>
+      <p class="mt-4 text-lg leading-8 text-zinc-300">{{ item.description }}</p>
+    </div>
+
+    <div class="rounded-2xl bg-white/8 p-4 shadow-2xl shadow-black/24 ring-1 ring-white/10 sm:p-6">
+      @switch (item.slug) {
+        @case ('word-counter') {
+          <div class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+            <div class="grid gap-4">
+              <textarea
+                class="min-h-80 rounded-xl border border-[var(--border)] bg-[var(--panel-strong)] p-4 text-[var(--foreground)] outline-none transition focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent-soft)]"
+                placeholder="Paste or write your content here"
+                [ngModel]="textInput()"
+                (ngModelChange)="textInput.set($event)"
+              ></textarea>
+
+              <div class="grid gap-3 sm:grid-cols-3">
+                <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]">
+                  <p class="text-2xl font-semibold text-[var(--foreground)]">{{ wordStats().readingTimeMinutes }} min</p>
+                  <p class="text-sm text-[var(--muted)]">Reading time</p>
+                </div>
+                <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]">
+                  <p class="text-2xl font-semibold text-[var(--foreground)]">{{ wordStats().averageWordLength }}</p>
+                  <p class="text-sm text-[var(--muted)]">Avg word length</p>
+                </div>
+                <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]">
+                  <p class="truncate text-2xl font-semibold text-[var(--foreground)]" [title]="wordStats().longestWord">{{ wordStats().longestWord }}</p>
+                  <p class="text-sm text-[var(--muted)]">Longest word</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid content-start gap-3 sm:grid-cols-2">
+              <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]"><p class="text-3xl font-semibold text-[var(--foreground)]">{{ wordStats().words }}</p><p class="text-sm text-[var(--muted)]">Words</p></div>
+              <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]"><p class="text-3xl font-semibold text-[var(--foreground)]">{{ wordStats().characters }}</p><p class="text-sm text-[var(--muted)]">Characters</p></div>
+              <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]"><p class="text-3xl font-semibold text-[var(--foreground)]">{{ wordStats().charactersNoSpaces }}</p><p class="text-sm text-[var(--muted)]">No spaces</p></div>
+              <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]"><p class="text-3xl font-semibold text-[var(--foreground)]">{{ wordStats().sentences }}</p><p class="text-sm text-[var(--muted)]">Sentences</p></div>
+              <div class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)]"><p class="text-3xl font-semibold text-[var(--foreground)]">{{ wordStats().paragraphs }}</p><p class="text-sm text-[var(--muted)]">Paragraphs</p></div>
+
+              <section class="rounded-xl bg-[var(--panel-strong)] p-4 ring-1 ring-[var(--border)] sm:col-span-2">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                  <h2 class="text-sm font-semibold text-[var(--foreground)]">Keyword density</h2>
+                  <span class="rounded-full bg-[var(--accent-soft)] px-2.5 py-1 text-xs font-semibold text-[var(--accent-strong)]">Top 5</span>
+                </div>
+                @if (wordStats().keywordDensity.length) {
+                  <div class="grid gap-2">
+                    @for (keyword of wordStats().keywordDensity; track keyword.word) {
+                      <div class="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg bg-[var(--panel-hover)] px-3 py-2 text-sm">
+                        <span class="truncate font-semibold text-[var(--foreground)]">{{ keyword.word }}</span>
+                        <span class="text-[var(--muted)]">{{ keyword.count }}x</span>
+                        <span class="font-semibold text-[var(--accent-strong)]">{{ keyword.percentage }}%</span>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p class="rounded-lg bg-[var(--panel-hover)] px-3 py-2 text-sm text-[var(--muted)]">Add more text to see repeated keywords.</p>
+                }
+              </section>
+            </div>
+          </div>
+        }
+        @case ('character-counter') {
+          <textarea class="min-h-72 w-full rounded-lg border border-zinc-300 p-4 outline-none focus:border-[#245f46]" [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+          <div class="mt-5 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-lg bg-zinc-950/70 p-4 ring-1 ring-white/10"><p class="text-3xl font-semibold text-white">{{ wordStats().characters }}</p><p class="text-sm text-zinc-400">Characters</p></div>
+            <div class="rounded-lg bg-zinc-950/70 p-4 ring-1 ring-white/10"><p class="text-3xl font-semibold text-white">{{ wordStats().charactersNoSpaces }}</p><p class="text-sm text-zinc-400">Without spaces</p></div>
+            <div class="rounded-lg bg-zinc-950/70 p-4 ring-1 ring-white/10"><p class="text-3xl font-semibold text-white">{{ wordStats().words }}</p><p class="text-sm text-zinc-400">Words</p></div>
+          </div>
+        }
+        @case ('case-converter') {
+          <textarea class="min-h-56 w-full rounded-lg border border-zinc-300 p-4 outline-none focus:border-[#245f46]" [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertCase('upper')">Uppercase</button>
+            <button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertCase('lower')">Lowercase</button>
+            <button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertCase('title')">Title case</button>
+            <button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertCase('sentence')">Sentence case</button>
+            <button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertCase('slug')">Slug case</button>
+          </div>
+          <pre class="mt-4 whitespace-pre-wrap rounded-lg bg-zinc-950/70 p-4 text-zinc-100 ring-1 ring-white/10">{{ convertedText() || 'Converted text appears here.' }}</pre>
+        }
+        @case ('password-generator') {
+          <div class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+            <div class="grid gap-4">
+              <label class="grid gap-2 text-sm font-medium">Length <input type="number" min="6" max="64" class="rounded-lg border border-zinc-300 p-3" [ngModel]="passwordLength()" (ngModelChange)="passwordLength.set($event); generatePassword()" /></label>
+              <label class="flex items-center gap-2"><input type="checkbox" [ngModel]="includeUppercase()" (ngModelChange)="includeUppercase.set($event); generatePassword()" /> Uppercase</label>
+              <label class="flex items-center gap-2"><input type="checkbox" [ngModel]="includeNumbers()" (ngModelChange)="includeNumbers.set($event); generatePassword()" /> Numbers</label>
+              <label class="flex items-center gap-2"><input type="checkbox" [ngModel]="includeSymbols()" (ngModelChange)="includeSymbols.set($event); generatePassword()" /> Symbols</label>
+            </div>
+            <div>
+              <pre class="min-h-32 overflow-auto rounded-lg bg-zinc-950 p-5 text-lg text-white">{{ password() }}</pre>
+              <div class="mt-4 flex gap-2">
+                <button class="rounded-lg bg-[#245f46] px-4 py-2 text-sm font-semibold text-white" (click)="generatePassword()">Generate</button>
+                <button class="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold" (click)="copy(password())">Copy</button>
+              </div>
+            </div>
+          </div>
+        }
+        @case ('qr-code-generator') {
+          <div class="grid gap-5 md:grid-cols-[1fr_280px]">
+            <textarea class="min-h-56 rounded-lg border border-zinc-300 p-4 outline-none focus:border-[#245f46]" placeholder="Enter a URL or short text" [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+            <div class="grid place-items-center rounded-lg bg-zinc-950/70 p-6 ring-1 ring-white/10">
+              <img [src]="qrUrl()" alt="Generated QR code" class="size-56 rounded-lg bg-white p-2" />
+            </div>
+          </div>
+        }
+        @case ('json-formatter') {
+          <textarea class="min-h-64 w-full rounded-lg border border-zinc-300 p-4 font-mono text-sm outline-none focus:border-[#245f46]" placeholder='{"name":"QuickToolHub"}' [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+          <div class="mt-4 flex gap-2"><button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="formatJson()">Format</button><button class="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold" (click)="formatJson(true)">Minify</button></div>
+          @if (jsonError()) { <p class="mt-3 text-sm font-medium text-red-700">{{ jsonError() }}</p> }
+          <pre class="mt-4 overflow-auto rounded-lg bg-zinc-950/70 p-4 font-mono text-sm text-zinc-100 ring-1 ring-white/10">{{ convertedText() || 'Formatted JSON appears here.' }}</pre>
+        }
+        @case ('base64-encoder-decoder') {
+          <textarea class="min-h-56 w-full rounded-lg border border-zinc-300 p-4 outline-none focus:border-[#245f46]" [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+          <div class="mt-4 flex gap-2"><button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertBase64('encode')">Encode</button><button class="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold" (click)="convertBase64('decode')">Decode</button></div>
+          @if (jsonError()) { <p class="mt-3 text-sm font-medium text-red-700">{{ jsonError() }}</p> }
+          <pre class="mt-4 whitespace-pre-wrap rounded-lg bg-zinc-950/70 p-4 text-zinc-100 ring-1 ring-white/10">{{ convertedText() || 'Output appears here.' }}</pre>
+        }
+        @case ('url-encoder-decoder') {
+          <textarea class="min-h-56 w-full rounded-lg border border-zinc-300 p-4 outline-none focus:border-[#245f46]" [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+          <div class="mt-4 flex gap-2"><button class="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white" (click)="convertUrl('encode')">Encode</button><button class="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-semibold" (click)="convertUrl('decode')">Decode</button></div>
+          @if (jsonError()) { <p class="mt-3 text-sm font-medium text-red-700">{{ jsonError() }}</p> }
+          <pre class="mt-4 whitespace-pre-wrap rounded-lg bg-zinc-950/70 p-4 text-zinc-100 ring-1 ring-white/10">{{ convertedText() || 'Output appears here.' }}</pre>
+        }
+        @case ('markdown-preview') {
+          <div class="grid gap-5 lg:grid-cols-2">
+            <textarea class="min-h-96 rounded-lg border border-zinc-300 p-4 font-mono text-sm outline-none focus:border-[#245f46]" [ngModel]="textInput()" (ngModelChange)="textInput.set($event)"></textarea>
+            <div class="prose prose-zinc min-h-96 max-w-none rounded-lg bg-[#f7f8f4] p-5" [innerHTML]="markdownPreview()"></div>
+          </div>
+        }
+        @case ('age-calculator') {
+          <div class="grid gap-5 md:grid-cols-2">
+            <label class="grid gap-2 text-sm font-medium">Birth date <input type="date" class="rounded-lg border border-zinc-300 p-3" [ngModel]="birthDate()" (ngModelChange)="birthDate.set($event)" /></label>
+            <label class="grid gap-2 text-sm font-medium">Compare date <input type="date" class="rounded-lg border border-zinc-300 p-3" [ngModel]="compareDate()" (ngModelChange)="compareDate.set($event)" /></label>
+          </div>
+          <div class="mt-5 rounded-lg bg-zinc-950/70 p-5 ring-1 ring-white/10"><p class="text-sm text-zinc-400">Age result</p><p class="mt-2 text-2xl font-semibold text-white">{{ ageResult() }}</p></div>
+        }
+        @case ('phone-number-generator') {
+          <div class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+            <div class="grid content-start gap-4">
+              <label class="grid gap-2 text-sm font-medium">
+                Country format
+                <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="phoneCountry()" (ngModelChange)="phoneCountry.set($event); generatePhoneNumbers()">
+                  <option value="us">United States</option>
+                  <option value="uk">United Kingdom</option>
+                  <option value="vn">Vietnam</option>
+                  <option value="au">Australia</option>
+                </select>
+              </label>
+              <label class="grid gap-2 text-sm font-medium">
+                Quantity
+                <input type="number" min="1" max="50" class="rounded-lg border border-zinc-300 p-3" [ngModel]="phoneCount()" (ngModelChange)="phoneCount.set($event); generatePhoneNumbers()" />
+              </label>
+              <button class="rounded-lg bg-[#245f46] px-4 py-2.5 text-sm font-semibold text-white" (click)="generatePhoneNumbers()">Generate numbers</button>
+              <button class="rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-semibold" (click)="copy(generatedPhones().join('\n'))">Copy all</button>
+            </div>
+            <div class="rounded-lg bg-zinc-950/70 p-4 ring-1 ring-white/10">
+              <div class="grid gap-2">
+                @for (phone of generatedPhones(); track phone) {
+                  <div class="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2 font-mono text-sm ring-1 ring-zinc-200">
+                    <span>{{ phone }}</span>
+                    <button class="text-xs font-semibold text-[#245f46]" (click)="copy(phone)">Copy</button>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+        @case ('random-wheel') {
+          <div class="grid gap-6 lg:grid-cols-[minmax(320px,1fr)_360px]">
+            <div class="relative grid place-items-center overflow-hidden rounded-lg bg-zinc-950 p-6 text-center text-white sm:p-8">
+              <div class="absolute top-6 z-20 h-0 w-0 border-l-[16px] border-r-[16px] border-t-[30px] border-l-transparent border-r-transparent border-t-[#d7ff7a] drop-shadow"></div>
+              <button
+                type="button"
+                class="relative grid aspect-square w-full max-w-[460px] place-items-center rounded-full shadow-2xl shadow-black/30 outline-none transition-transform duration-[3600ms] ease-out focus:ring-4 focus:ring-[#d7ff7a]/40 disabled:cursor-wait"
+                [style.background]="wheelBackground()"
+                [style.transform]="'rotate(' + wheelRotation() + 'deg)'"
+                [disabled]="wheelSpinning() || wheelEntries().length === 0"
+                aria-label="Spin the wheel"
+                (click)="spinWheel()"
+              >
+                <div class="absolute inset-0 rounded-full border-[10px] border-white/90"></div>
+                <div class="absolute inset-[11%] rounded-full border border-white/40"></div>
+
+                @for (entry of wheelEntries(); track $index; let index = $index) {
+                  <span
+                    class="absolute left-1/2 top-1/2 max-w-28 origin-center -translate-x-1/2 -translate-y-1/2 truncate text-xs font-bold sm:max-w-36 sm:text-sm"
+                    [style.transform]="wheelLabelTransform(index)"
+                    [style.color]="wheelLabelColor(index)"
+                    [title]="entry"
+                  >
+                    {{ entry }}
+                  </span>
+                }
+
+                <div class="relative z-10 grid size-24 place-items-center rounded-full bg-white text-zinc-950 shadow-lg ring-4 ring-zinc-950/10">
+                  <span class="text-sm font-bold">{{ wheelSpinning() ? 'SPIN' : 'CLICK' }}</span>
+                </div>
+              </button>
+
+              <p class="mt-5 text-sm text-zinc-300">
+                {{ wheelEntries().length ? 'Click the wheel to spin.' : 'Add entries to build the wheel.' }}
+              </p>
+            </div>
+
+            <aside class="rounded-lg border border-white/10 bg-zinc-950/70 p-4">
+              <div class="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <h2 class="font-semibold text-white">Entries</h2>
+                  <p class="mt-1 text-sm text-zinc-400">{{ wheelEntries().length }} entries on wheel</p>
+                </div>
+                <button class="rounded-lg bg-[#245f46] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60" [disabled]="wheelSpinning() || wheelEntries().length === 0" (click)="spinWheel()">
+                  {{ wheelSpinning() ? 'Spinning' : 'Spin' }}
+                </button>
+              </div>
+
+              <textarea
+                class="min-h-[360px] w-full resize-y rounded-lg border border-zinc-300 bg-white p-4 text-sm leading-6 outline-none focus:border-[#245f46]"
+                placeholder="Enter one item per line"
+                [ngModel]="wheelOptions()"
+                (ngModelChange)="wheelOptions.set($event)"
+              ></textarea>
+
+              @if (wheelResult() && !winnerDialogOpen()) {
+                <p class="mt-3 rounded-lg bg-white px-3 py-2 text-sm text-zinc-700 ring-1 ring-zinc-200">Last result: <strong>{{ wheelResult() }}</strong></p>
+              }
+            </aside>
+          </div>
+
+          @if (winnerDialogOpen()) {
+            <div class="fixed inset-0 z-[70] grid place-items-center bg-zinc-950/55 px-4 backdrop-blur-sm">
+              <section class="w-full max-w-md rounded-lg bg-white p-6 text-center shadow-2xl shadow-black/30">
+                <p class="text-sm font-medium text-[#245f46]">Winner</p>
+                <h2 class="mt-3 text-3xl font-semibold text-zinc-950">{{ wheelWinner() }}</h2>
+                <p class="mt-3 text-sm leading-6 text-zinc-600">Close to keep this entry, or remove it from the wheel before the next spin.</p>
+                <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                  <button class="rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-semibold text-zinc-900" (click)="winnerDialogOpen.set(false)">Close</button>
+                  <button class="rounded-lg bg-[#245f46] px-4 py-2.5 text-sm font-semibold text-white" (click)="removeWheelWinner()">Remove</button>
+                </div>
+              </section>
+            </div>
+          }
+        }
+        @case ('game-username-generator') {
+          <div class="grid gap-6 lg:grid-cols-[360px_1fr]">
+            <aside class="rounded-lg bg-zinc-950/70 p-4 text-zinc-100 ring-1 ring-white/10">
+              <div class="grid gap-4">
+                <label class="grid gap-2 text-sm font-medium">
+                  Style
+                  <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="gameNameStyle()" (ngModelChange)="gameNameStyle.set($event); generateGameNames()">
+                    <option value="japanese">Japanese-inspired</option>
+                    <option value="cool">Cool</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="cyberpunk">Cyberpunk</option>
+                    <option value="dark">Dark</option>
+                    <option value="cute">Cute</option>
+                    <option value="minimal">Minimal</option>
+                  </select>
+                </label>
+
+                <label class="grid gap-2 text-sm font-medium">
+                  Use case
+                  <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="gameNameUseCase()" (ngModelChange)="gameNameUseCase.set($event); generateGameNames()">
+                    <option>Game character</option>
+                    <option>Username</option>
+                    <option>Guild name</option>
+                    <option>Streamer name</option>
+                    <option>RPG character</option>
+                  </select>
+                </label>
+
+                <label class="grid gap-2 text-sm font-medium">
+                  Length
+                  <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="gameNameLength()" (ngModelChange)="gameNameLength.set($event); generateGameNames()">
+                    <option value="short">Short</option>
+                    <option value="medium">Medium</option>
+                    <option value="long">Long</option>
+                  </select>
+                </label>
+
+                <label class="grid gap-2 text-sm font-medium">
+                  Format
+                  <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="gameNameFormat()" (ngModelChange)="gameNameFormat.set($event); generateGameNames()">
+                    <option value="compound">Compound</option>
+                    <option value="plain">Plain</option>
+                    <option value="number">With number</option>
+                    <option value="separator">With separator</option>
+                  </select>
+                </label>
+
+                <label class="grid gap-2 text-sm font-medium">
+                  Optional keyword
+                  <input class="rounded-lg border border-zinc-300 bg-white p-3" placeholder="shadow, dragon, moon" [ngModel]="gameNameKeyword()" (ngModelChange)="gameNameKeyword.set($event)" />
+                </label>
+
+                <button class="rounded-lg bg-[#245f46] px-4 py-2.5 text-sm font-semibold text-white" (click)="generateGameNames()">Generate names</button>
+              </div>
+            </aside>
+
+            <div class="grid gap-4">
+              <div class="grid gap-4 md:grid-cols-2">
+                @for (result of gameNameResults(); track result.name) {
+                  <article class="rounded-lg bg-zinc-950/70 p-4 ring-1 ring-white/10">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <h2 class="text-2xl font-semibold text-white">{{ result.name }}</h2>
+                        <p class="mt-1 text-sm text-zinc-400">{{ result.pronunciation }}</p>
+                      </div>
+                      <button class="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-[#245f46] ring-1 ring-zinc-200" (click)="toggleGameNameFavorite(result)">
+                        {{ isGameNameFavorite(result.name) ? 'Saved' : 'Save' }}
+                      </button>
+                    </div>
+                    <p class="mt-3 text-sm leading-6 text-zinc-300"><strong>Meaning:</strong> {{ result.meaning }}</p>
+                    <p class="mt-1 text-sm leading-6 text-zinc-400"><strong>Vibe:</strong> {{ result.vibe }}</p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      <button class="rounded-lg bg-zinc-950 px-3 py-1.5 text-xs font-semibold text-white" (click)="copy(result.name)">Copy</button>
+                      @for (variant of result.variants; track variant) {
+                        <button class="rounded-lg bg-white px-3 py-1.5 font-mono text-xs text-zinc-700 ring-1 ring-zinc-200" (click)="copy(variant)">{{ variant }}</button>
+                      }
+                    </div>
+                  </article>
+                }
+              </div>
+
+              @if (gameNameFavorites().length) {
+                <section class="rounded-lg bg-zinc-950/70 p-4 ring-1 ring-white/10">
+                  <h2 class="font-semibold text-white">Saved names</h2>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    @for (favorite of gameNameFavorites(); track favorite.name) {
+                      <button class="rounded-lg bg-[#f7f8f4] px-3 py-1.5 text-sm font-medium text-zinc-800 ring-1 ring-zinc-200" (click)="copy(favorite.name)">{{ favorite.name }}</button>
+                    }
+                  </div>
+                </section>
+              }
+            </div>
+          </div>
+        }
+        @case ('encrypt-decrypt') {
+          <div class="grid gap-6 lg:grid-cols-[380px_1fr]">
+            <aside class="grid content-start gap-4 rounded-lg bg-zinc-950/70 p-4 text-zinc-100 ring-1 ring-white/10">
+              <div class="rounded-lg bg-white/8 p-3 text-sm leading-6 text-zinc-300 ring-1 ring-white/10">
+                Browser-only tool. Inputs, keys, salt, IV, and output are not saved to the database.
+              </div>
+
+              <label class="grid gap-2 text-sm font-medium">
+                Mode
+                <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="cryptoMode()" (ngModelChange)="cryptoMode.set($event)">
+                  <option value="encrypt">Encrypt</option>
+                  <option value="decrypt">Decrypt</option>
+                </select>
+              </label>
+
+              <label class="grid gap-2 text-sm font-medium">
+                Algorithm
+                <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="cryptoAlgorithm()" (ngModelChange)="cryptoAlgorithm.set($event); generateCryptoIv()">
+                  <option value="AES-GCM">AES-GCM</option>
+                  <option value="AES-CBC">AES-CBC</option>
+                </select>
+              </label>
+
+              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                <label class="grid gap-2 text-sm font-medium">
+                  Plaintext encoding
+                  <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="cryptoPlaintextEncoding()" (ngModelChange)="cryptoPlaintextEncoding.set($event)">
+                    <option value="utf-8">UTF-8 text</option>
+                    <option value="base64">Base64 bytes</option>
+                    <option value="hex">Hex bytes</option>
+                  </select>
+                </label>
+
+                <label class="grid gap-2 text-sm font-medium">
+                  Ciphertext encoding
+                  <select class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="cryptoOutputEncoding()" (ngModelChange)="cryptoOutputEncoding.set($event)">
+                    <option value="base64">Base64</option>
+                    <option value="hex">Hex</option>
+                  </select>
+                </label>
+              </div>
+
+              <label class="grid gap-2 text-sm font-medium">
+                PBKDF2 iterations
+                <input type="number" min="1" class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="cryptoIterations()" (ngModelChange)="cryptoIterations.set($event)" />
+              </label>
+
+              <label class="grid gap-2 text-sm font-medium">
+                Secret key / passphrase
+                <input type="password" class="rounded-lg border border-zinc-300 bg-white p-3" [ngModel]="cryptoPassphrase()" (ngModelChange)="cryptoPassphrase.set($event)" />
+              </label>
+
+              <label class="grid gap-2 text-sm font-medium">
+                Salt hex
+                <div class="flex gap-2">
+                  <input class="min-w-0 flex-1 rounded-lg border border-zinc-300 bg-white p-3 font-mono text-xs" [ngModel]="cryptoSalt()" (ngModelChange)="cryptoSalt.set($event)" />
+                  <button class="rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold" (click)="generateCryptoSalt()">New</button>
+                </div>
+              </label>
+
+              <label class="grid gap-2 text-sm font-medium">
+                IV hex
+                <div class="flex gap-2">
+                  <input class="min-w-0 flex-1 rounded-lg border border-zinc-300 bg-white p-3 font-mono text-xs" [ngModel]="cryptoIv()" (ngModelChange)="cryptoIv.set($event)" />
+                  <button class="rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold" (click)="generateCryptoIv()">New</button>
+                </div>
+                <span class="text-xs font-normal text-zinc-500">AES-GCM uses 12 bytes. AES-CBC uses 16 bytes.</span>
+              </label>
+            </aside>
+
+            <div class="grid gap-4">
+              <label class="grid gap-2 text-sm font-medium">
+                {{ cryptoMode() === 'encrypt' ? 'Plaintext input' : 'Ciphertext input' }}
+                <textarea
+                  class="min-h-64 rounded-lg border border-zinc-300 p-4 font-mono text-sm outline-none focus:border-[#245f46]"
+                  [placeholder]="cryptoMode() === 'encrypt' ? 'Text to encrypt' : 'Encrypted Base64 or Hex text'"
+                  [ngModel]="cryptoInput()"
+                  (ngModelChange)="cryptoInput.set($event)"
+                ></textarea>
+              </label>
+
+              <div class="flex flex-wrap gap-2">
+                <button class="rounded-lg bg-[#245f46] px-5 py-2.5 text-sm font-semibold text-white" (click)="runCryptoTool()">
+                  {{ cryptoMode() === 'encrypt' ? 'Encrypt' : 'Decrypt' }}
+                </button>
+                <button class="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold" (click)="copy(cryptoOutput())" [disabled]="!cryptoOutput()">Copy output</button>
+                <button class="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold" (click)="cryptoInput.set(''); cryptoOutput.set(''); cryptoError.set('')">Clear</button>
+              </div>
+
+              @if (cryptoError()) {
+                <p class="rounded-lg bg-red-50 p-3 text-sm font-medium text-red-800 ring-1 ring-red-200">{{ cryptoError() }}</p>
+              }
+
+              <div class="rounded-lg bg-zinc-950 p-4 text-white">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                  <h2 class="font-semibold">Output</h2>
+                  <span class="text-xs text-zinc-400">{{ cryptoMode() === 'encrypt' ? cryptoOutputEncoding() : cryptoPlaintextEncoding() }}</span>
+                </div>
+                <pre class="min-h-52 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-white/8 p-4 font-mono text-sm leading-6 text-zinc-100">{{ cryptoOutput() || 'Output appears here.' }}</pre>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <section>
+        <h2 class="text-2xl font-semibold text-white">How to use {{ item.name }}</h2>
+        <ol class="mt-4 grid gap-3 text-zinc-300">
+          @for (step of item.howToUse; track step; let index = $index) {
+            <li class="rounded-lg bg-white/8 p-4 ring-1 ring-white/10"><strong>{{ index + 1 }}.</strong> {{ step }}</li>
+          }
+        </ol>
+      </section>
+      <section>
+        <h2 class="text-2xl font-semibold text-white">FAQ</h2>
+        <div class="mt-4 grid gap-4">
+          @for (faq of item.faqs; track faq.question) {
+            <div class="rounded-lg bg-white/8 p-4 ring-1 ring-white/10">
+              <h3 class="font-semibold text-white">{{ faq.question }}</h3>
+              <p class="mt-2 leading-7 text-zinc-300">{{ faq.answer }}</p>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+
+    @if (relatedTools().length) {
+      <section class="mt-12">
+        <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <p class="text-sm font-semibold text-[#245f46]">Keep working</p>
+            <h2 class="mt-2 text-2xl font-semibold text-white">Related tools</h2>
+          </div>
+          <a [routerLink]="['/tools/category', item.category.toLowerCase()]" class="text-sm font-semibold text-[#245f46] hover:text-[#1d4f3a]">
+            Browse {{ item.category.toLowerCase() }} tools
+          </a>
+        </div>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          @for (related of relatedTools(); track related.slug) {
+            <app-tool-card [tool]="related" />
+          }
+        </div>
+      </section>
+    }
+  } @else {
+    <div class="rounded-lg bg-white p-10 text-center ring-1 ring-zinc-200">
+      <h1 class="text-2xl font-semibold">Tool not found</h1>
+      <a routerLink="/tools" class="mt-4 inline-flex rounded-lg bg-[#245f46] px-4 py-2 text-sm font-semibold text-white">Back to tools</a>
+    </div>
+  }
+</section>

@@ -1,0 +1,60 @@
+<header class="sticky top-0 z-40 px-3 py-3">
+  <nav class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 rounded-2xl border border-[var(--border)] bg-[var(--background-glass)] px-4 py-2 text-[var(--foreground)] shadow-2xl shadow-black/20 backdrop-blur sm:px-5 lg:px-6">
+    <a routerLink="/" class="group flex items-center gap-3 font-semibold">
+      <span class="grid size-10 place-items-center rounded-xl bg-[var(--accent)] text-sm font-black text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)]">QT</span>
+      <span class="text-base tracking-normal text-[var(--foreground)] group-hover:text-[var(--accent-strong)]">QuickToolHub</span>
+    </a>
+
+    <div class="hidden flex-1 items-center justify-end gap-5 md:flex">
+      <div class="flex items-center gap-2 rounded-xl bg-[var(--panel-hover)] p-1 text-sm font-medium text-[var(--muted)]">
+        <a routerLink="/tools" routerLinkActive="bg-[var(--accent)] text-white" class="rounded-lg px-3 py-2 transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[var(--accent-soft)] hover:text-[var(--foreground)]">Tools</a>
+        <a routerLink="/blog" routerLinkActive="bg-[var(--accent)] text-white" class="rounded-lg px-3 py-2 transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[var(--accent-soft)] hover:text-[var(--foreground)]">Blog</a>
+        <a routerLink="/about" routerLinkActive="bg-[var(--accent)] text-white" class="rounded-lg px-3 py-2 transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[var(--accent-soft)] hover:text-[var(--foreground)]">About</a>
+      </div>
+      <app-tool-search />
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-xl bg-[var(--panel-hover)] px-3 py-2 text-sm font-semibold text-[var(--muted)] ring-1 ring-[var(--border)] transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-[var(--border-hover)] hover:text-[var(--foreground)] active:scale-[0.98]"
+        [attr.aria-label]="theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+        (click)="theme.toggle()"
+      >
+        <span class="grid size-6 place-items-center rounded-lg bg-white/10">{{ theme.isDark() ? '☾' : '☼' }}</span>
+        {{ theme.isDark() ? 'Dark' : 'Light' }}
+      </button>
+      <a
+        routerLink="/tools"
+        class="group inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.24)] transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-[1.02] hover:bg-[var(--accent-strong)] active:scale-[0.98]"
+      >
+        Browse
+        <span class="grid size-6 place-items-center rounded-lg bg-zinc-950/10 transition group-hover:translate-x-0.5">-></span>
+      </a>
+    </div>
+
+    <button
+      type="button"
+      class="grid size-10 place-items-center rounded-xl border border-white/10 bg-white/8 text-white md:hidden"
+      aria-label="Toggle menu"
+      (click)="toggleMenu()"
+    >
+      <span class="h-0.5 w-5 bg-current shadow-[0_6px_0_current,0_-6px_0_current]"></span>
+    </button>
+  </nav>
+
+  @if (menuOpen()) {
+    <div class="mx-auto mt-3 max-w-7xl rounded-2xl border border-zinc-200 bg-white/96 px-4 py-4 shadow-2xl shadow-zinc-950/10 md:hidden">
+      <div class="grid gap-3 text-sm font-medium">
+        <app-tool-search />
+        <button
+          type="button"
+          class="rounded-lg bg-zinc-950 px-3 py-2 text-left text-white"
+          (click)="theme.toggle()"
+        >
+          Theme: {{ theme.isDark() ? 'Dark' : 'Light' }}
+        </button>
+        <a routerLink="/tools" class="rounded-lg px-3 py-2 hover:bg-white" (click)="toggleMenu()">Tools</a>
+        <a routerLink="/blog" class="rounded-lg px-3 py-2 hover:bg-white" (click)="toggleMenu()">Blog</a>
+        <a routerLink="/about" class="rounded-lg px-3 py-2 hover:bg-white" (click)="toggleMenu()">About</a>
+      </div>
+    </div>
+  }
+</header>

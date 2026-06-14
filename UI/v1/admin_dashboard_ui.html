@@ -1,0 +1,212 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-background-tertiary);color:var(--color-text-primary)}
+.browser-bar{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:8px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.dots{display:flex;gap:5px}.dot{width:10px;height:10px;border-radius:50%}
+.url-bar{flex:1;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--color-text-secondary)}
+.page{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;min-height:600px}
+.admin-layout{display:grid;grid-template-columns:180px 1fr;min-height:600px}
+.sidebar{background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);padding:0}
+.sidebar-logo{padding:14px 16px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:14px;font-weight:500;color:#185FA5}
+.sidebar-section{padding:10px 8px 4px;font-size:9px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.5px;padding-left:12px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:12px;color:var(--color-text-secondary);cursor:pointer;margin:1px 6px;border-radius:var(--border-radius-md)}
+.sidebar-item:hover{background:var(--color-background-primary)}
+.sidebar-item.active{background:var(--color-background-primary);color:#185FA5;border:0.5px solid var(--color-border-tertiary)}
+.sidebar-item i{font-size:15px}
+.badge-count{margin-left:auto;font-size:9px;background:#E24B4A;color:#fff;padding:1px 5px;border-radius:20px}
+
+.main-content{padding:16px;background:var(--color-background-tertiary)}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.page-title{font-size:16px;font-weight:500}
+.date-filter{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:5px 10px;display:flex;align-items:center;gap:5px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px}
+.stat-icon{width:32px;height:32px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-size:16px}
+.stat-value{font-size:20px;font-weight:500;margin-bottom:2px}
+.stat-label{font-size:10px;color:var(--color-text-secondary)}
+.stat-change{font-size:10px;margin-top:4px;display:flex;align-items:center;gap:3px}
+.up{color:#0F6E56}.down{color:#A32D2D}
+
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.card-header{padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:space-between}
+.card-header a{font-size:10px;color:#185FA5;font-weight:400}
+
+.chart-area{padding:12px 14px;height:120px;display:flex;align-items:flex-end;gap:4px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{border-radius:3px 3px 0 0;width:100%;min-height:4px;background:#B5D4F4;transition:background 0.1s}
+.bar.active{background:#185FA5}
+.bar-label{font-size:8px;color:var(--color-text-tertiary)}
+
+.list-item{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:11px}
+.list-item:last-child{border-bottom:none}
+.rank{font-size:13px;font-weight:500;color:#B5D4F4;min-width:16px}
+.list-info{flex:1}
+.list-name{font-weight:500;margin-bottom:1px}
+.list-sub{font-size:9px;color:var(--color-text-tertiary)}
+.list-val{font-size:12px;font-weight:500;color:#185FA5;text-align:right}
+.progress{height:4px;background:var(--color-background-secondary);border-radius:2px;margin-top:4px;overflow:hidden}
+.progress-fill{height:100%;background:#185FA5;border-radius:2px}
+
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-pub{background:#639922}
+.status-draft{background:#EF9F27}
+.status-review{background:#185FA5}
+
+.full-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:var(--color-background-secondary);padding:7px 12px;text-align:left;font-weight:500;font-size:10px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.tbl td{padding:7px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--color-background-secondary)}
+.badge{font-size:9px;padding:2px 7px;border-radius:20px}
+.badge-pub{background:#EAF3DE;color:#27500A}
+.badge-draft{background:#FAEEDA;color:#633806}
+.badge-rev{background:#E6F1FB;color:#0C447C}
+.btn-xs{font-size:10px;padding:3px 8px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:transparent;cursor:pointer;color:var(--color-text-secondary)}
+</style>
+
+<h2 class="sr-only">Mockup giao diện admin dashboard</h2>
+
+<div class="browser-bar">
+  <div class="dots">
+    <div class="dot" style="background:#E24B4A"></div>
+    <div class="dot" style="background:#EF9F27"></div>
+    <div class="dot" style="background:#639922"></div>
+  </div>
+  <div class="url-bar"><i class="ti ti-lock" style="font-size:11px;margin-right:4px" aria-hidden="true"></i> fintools.vn/admin</div>
+</div>
+
+<div class="page">
+  <div class="admin-layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo"><i class="ti ti-tool" aria-hidden="true"></i> FinTools Admin</div>
+      <div class="sidebar-section">Tổng quan</div>
+      <div class="sidebar-item active"><i class="ti ti-dashboard" aria-hidden="true"></i> Dashboard</div>
+      <div class="sidebar-section">Nội dung</div>
+      <div class="sidebar-item"><i class="ti ti-news" aria-hidden="true"></i> Bài viết <span class="badge-count">3</span></div>
+      <div class="sidebar-item"><i class="ti ti-tool" aria-hidden="true"></i> Công cụ</div>
+      <div class="sidebar-item"><i class="ti ti-folder" aria-hidden="true"></i> Danh mục</div>
+      <div class="sidebar-section">Tài chính</div>
+      <div class="sidebar-item"><i class="ti ti-building-bank" aria-hidden="true"></i> Lãi suất NH</div>
+      <div class="sidebar-item"><i class="ti ti-currency-dollar" aria-hidden="true"></i> Giá vàng / Tỉ giá</div>
+      <div class="sidebar-section">Quản lý</div>
+      <div class="sidebar-item"><i class="ti ti-message-2" aria-hidden="true"></i> Bình luận <span class="badge-count">5</span></div>
+      <div class="sidebar-item"><i class="ti ti-users" aria-hidden="true"></i> Người dùng</div>
+      <div class="sidebar-item"><i class="ti ti-ad-2" aria-hidden="true"></i> Quảng cáo</div>
+      <div class="sidebar-section">Hệ thống</div>
+      <div class="sidebar-item"><i class="ti ti-settings" aria-hidden="true"></i> Cài đặt</div>
+      <div class="sidebar-item" style="margin-top:20px"><i class="ti ti-logout" aria-hidden="true"></i> Đăng xuất</div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div style="font-size:11px;color:var(--color-text-tertiary)">Chào buổi sáng, Admin!</div>
+        </div>
+        <div class="date-filter"><i class="ti ti-calendar" style="font-size:11px" aria-hidden="true"></i> 30 ngày qua</div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#E6F1FB"><i class="ti ti-eye" style="color:#185FA5" aria-hidden="true"></i></div>
+          <div class="stat-value">45,230</div>
+          <div class="stat-label">Lượt xem trang</div>
+          <div class="stat-change up"><i class="ti ti-trending-up" style="font-size:10px" aria-hidden="true"></i> +12% so tháng trước</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#EAF3DE"><i class="ti ti-users" style="color:#3B6D11" aria-hidden="true"></i></div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-label">Người dùng mới</div>
+          <div class="stat-change up"><i class="ti ti-trending-up" style="font-size:10px" aria-hidden="true"></i> +8% so tháng trước</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#FAEEDA"><i class="ti ti-tool" style="color:#854F0B" aria-hidden="true"></i></div>
+          <div class="stat-value">72,810</div>
+          <div class="stat-label">Lượt dùng công cụ</div>
+          <div class="stat-change up"><i class="ti ti-trending-up" style="font-size:10px" aria-hidden="true"></i> +24% so tháng trước</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#FCEBEB"><i class="ti ti-currency-dollar" style="color:#A32D2D" aria-hidden="true"></i></div>
+          <div class="stat-value">$48.20</div>
+          <div class="stat-label">AdSense tháng này</div>
+          <div class="stat-change down"><i class="ti ti-trending-down" style="font-size:10px" aria-hidden="true"></i> -3% so tháng trước</div>
+        </div>
+      </div>
+
+      <!-- CHART + TOP TOOLS -->
+      <div class="content-grid">
+        <div class="card">
+          <div class="card-header"><span><i class="ti ti-chart-bar" style="font-size:12px;margin-right:4px" aria-hidden="true"></i>Lượt xem 14 ngày qua</span></div>
+          <div class="chart-area">
+            <div class="bar-wrap"><div class="bar" style="height:45%"></div><div class="bar-label">3/6</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:60%"></div><div class="bar-label">4/6</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:40%"></div><div class="bar-label">5/6</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:75%"></div><div class="bar-label">6/6</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bar-label">7/6</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:80%"></div><div class="bar-label">8/6</div></div>
+            <div class="bar-wrap"><div class="bar" style="height:65%"></div><div class="bar-label">9/6</div></div>
+            <div class="bar-wrap"><div class="bar active" style="height:90%"></div><div class="bar-label">10/6</div></div>
+            <div class="bar-wrap"><div class="bar active" style="height:78%"></div><div class="bar-label">11/6</div></div>
+            <div class="bar-wrap"><div class="bar active" style="height:95%"></div><div class="bar-label">12/6</div></div>
+            <div class="bar-wrap"><div class="bar active" style="height:70%"></div><div class="bar-label">13/6</div></div>
+            <div class="bar-wrap"><div class="bar active" style="height:85%"></div><div class="bar-label">14/6</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span><i class="ti ti-flame" style="font-size:12px;margin-right:4px" aria-hidden="true"></i>Công cụ phổ biến</span><a href="#">Xem tất cả</a></div>
+          <div class="list-item"><span class="rank">1</span><div class="list-info"><div class="list-name">Tính lãi vay</div><div class="progress"><div class="progress-fill" style="width:100%"></div></div></div><span class="list-val">12,400</span></div>
+          <div class="list-item"><span class="rank">2</span><div class="list-info"><div class="list-name">Đổi tiền tệ</div><div class="progress"><div class="progress-fill" style="width:85%"></div></div></div><span class="list-val">10,520</span></div>
+          <div class="list-item"><span class="rank">3</span><div class="list-info"><div class="list-name">Thuế TNCN</div><div class="progress"><div class="progress-fill" style="width:75%"></div></div></div><span class="list-val">9,310</span></div>
+          <div class="list-item"><span class="rank">4</span><div class="list-info"><div class="list-name">Tiết kiệm</div><div class="progress"><div class="progress-fill" style="width:66%"></div></div></div><span class="list-val">8,200</span></div>
+        </div>
+      </div>
+
+      <!-- RECENT ARTICLES TABLE -->
+      <div class="full-card">
+        <div class="card-header"><span><i class="ti ti-news" style="font-size:12px;margin-right:4px" aria-hidden="true"></i>Bài viết gần đây</span><a href="#">Quản lý bài viết</a></div>
+        <table class="tbl">
+          <thead>
+            <tr><th>Tiêu đề</th><th>Danh mục</th><th>Tác giả</th><th>Lượt xem</th><th>Trạng thái</th><th>Ngày</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="max-width:180px">Ngân hàng nào có lãi suất cao nhất 2026?</td>
+              <td>Lãi suất</td><td>Nguyễn An</td><td>4,821</td>
+              <td><span class="badge badge-pub">Đã đăng</span></td>
+              <td>10/06</td>
+              <td><span class="btn-xs">Sửa</span></td>
+            </tr>
+            <tr>
+              <td style="max-width:180px">Kinh nghiệm vay mua nhà lần đầu</td>
+              <td>Vay vốn</td><td>Lê Hương</td><td>2,110</td>
+              <td><span class="badge badge-pub">Đã đăng</span></td>
+              <td>09/06</td>
+              <td><span class="btn-xs">Sửa</span></td>
+            </tr>
+            <tr>
+              <td style="max-width:180px">Cách tính thuế TNCN 2026</td>
+              <td>Thuế</td><td>Trần Bình</td><td>—</td>
+              <td><span class="badge badge-rev">Chờ duyệt</span></td>
+              <td>08/06</td>
+              <td><span class="btn-xs" style="color:#185FA5;border-color:#185FA5">Duyệt</span></td>
+            </tr>
+            <tr>
+              <td style="max-width:180px">Top 5 ứng dụng quản lý tài chính cá nhân</td>
+              <td>Hướng dẫn</td><td>Phạm Nam</td><td>—</td>
+              <td><span class="badge badge-draft">Bản nháp</span></td>
+              <td>07/06</td>
+              <td><span class="btn-xs">Sửa</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
